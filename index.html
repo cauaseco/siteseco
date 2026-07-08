@@ -1,1 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia Visual de Redes para Automação</title>
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #f4f4f9;
+            --text-color: #333;
+            --border-radius: 8px;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e9ecef;
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            width: 100%;
+            text-align: center;
+            padding: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 20px auto;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        /* Tabs Navigation */
+        .tabs {
+            display: flex;
+            background-color: #d1d8e0;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            background: none;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .tab-btn:hover {
+            background-color: #b0bec5;
+        }
+
+        .tab-btn.active {
+            background-color: white;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        /* Tab Contents */
+        .tab-content {
+            display: none;
+            padding: 20px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Cards Layout (Aba 1) */
+        .cards-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background-color: var(--secondary-color);
+            border: 1px solid #ccc;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            width: 250px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: bold;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border-color: var(--primary-color);
+        }
+
+        /* Buttons Layout (Aba 2) */
+        .buttons-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .action-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .action-btn:hover {
+            background-color: #004494;
+        }
+
+        /* Info Display Area */
+        .info-display {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-left: 5px solid var(--primary-color);
+            border-radius: 4px;
+            display: none; /* Escondido por padrão */
+        }
+
+        .info-display h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+        
+        ul {
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Guia Visual de Redes para Automação</h1>
+    </header>
+
+    <div class="container">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('cabos')">Cabos Industriais</button>
+            <button class="tab-btn" onclick="openTab('topologias')">Topologias</button>
+        </div>
+
+        <div id="cabos" class="tab-content active">
+            <p style="text-align: center;">Selecione um meio de transmissão para ver sua aplicação no chão de fábrica:</p>
+            <div class="cards-container">
+                <div class="card" onclick="showInfo('par-trancado')">Par Trançado</div>
+                <div class="card" onclick="showInfo('fibra')">Fibra Óptica</div>
+                <div class="card" onclick="showInfo('wireless')">Wireless</div>
+            </div>
+
+            <div id="info-cabos" class="info-display"></div>
+        </div>
+
+        <div id="topologias" class="tab-content">
+            <p style="text-align: center;">Escolha um layout de rede para ver vantagens e desvantagens:</p>
+            <div class="buttons-container">
+                <button class="action-btn" onclick="showInfo('estrela')">Layout em Estrela</button>
+                <button class="action-btn" onclick="showInfo('barramento')">Layout em Barramento</button>
+            </div>
+
+            <div id="info-topologias" class="info-display"></div>
+        </div>
+    </div>
+
+    <script>
+        // Dados das explicações (Cabos e Topologias)
+        const data = {
+            'par-trancado': `
+                <h3>Cabo de Par Trançado</h3>
+                <p><strong>Onde é usado:</strong> É o cabo mais comum (como os de rede Ethernet industrial). Usado para conectar CLPs, sensores, IHMs e painéis em distâncias curtas (até 100m). Na indústria, costumam ter blindagem extra para não sofrerem interferência de motores elétricos.</p>
+            `,
+            'fibra': `
+                <h3>Fibra Óptica</h3>
+                <p><strong>Onde é usado:</strong> Usada no "backbone" (espinha dorsal) da fábrica. É perfeita para interligar galpões distantes ou passar cabos no meio de equipamentos pesados que geram muito ruído elétrico, pois a fibra usa luz e é imune a interferência eletromagnética.</p>
+            `,
+            'wireless': `
+                <h3>Rede Wireless (Sem Fio)</h3>
+                <p><strong>Onde é usado:</strong> Ideal para mobilidade. É usada em AGVs (Veículos Guiados Automaticamente) que rodam pela fábrica, tablets nas mãos de técnicos de manutenção, ou em sensores espalhados por áreas de difícil acesso onde passar um cabo seria caro ou perigoso.</p>
+            `,
+            'estrela': `
+                <h3>Layout em Estrela</h3>
+                <p>Nesta topologia, todas as máquinas e dispositivos se conectam a um equipamento central (como um Switch).</p>
+                <strong>Vantagens:</strong>
+                <ul>
+                    <li>Se um cabo quebrar, apenas aquela máquina para. O resto da fábrica continua funcionando.</li>
+                    <li>É muito fácil achar onde está o defeito.</li>
+                </ul>
+                <strong>Desvantagens:</strong>
+                <ul>
+                    <li>Gasta-se muito mais cabo, pois cada máquina precisa de um cabo até o centro.</li>
+                    <li>Se o Switch central queimar, a rede da fábrica inteira cai.</li>
+                </ul>
+            `,
+            'barramento': `
+                <h3>Layout em Barramento</h3>
+                <p>Nesta topologia, um único cabo principal (o "tronco") passa pela fábrica, e todas as máquinas se "penduram" nele (muito comum em redes antigas ou padrões como Profibus).</p>
+                <strong>Vantagens:</strong>
+                <ul>
+                    <li>Usa muito menos cabo, tornando a instalação inicial mais barata.</li>
+                    <li>Fácil de adicionar uma máquina nova no meio do caminho.</li>
+                </ul>
+                <strong>Desvantagens:</strong>
+                <ul>
+                    <li>Se o cabo principal romper, a comunicação de todas as máquinas é interrompida.</li>
+                    <li>É muito mais difícil descobrir exatamente onde ocorreu a falha no cabo.</li>
+                </ul>
+            `
+        };
+
+        // Função para alternar entre as abas
+        function openTab(tabName) {
+            // Remove a classe 'active' de todas as abas e botões
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            // Mostra a aba clicada
+            document.getElementById(tabName).classList.add('active');
+            
+            // Marca o botão da aba como selecionado
+            event.currentTarget.classList.add('active');
+
+            // Esconde as caixas de informação ao trocar de aba para manter limpo
+            document.getElementById('info-cabos').style.display = 'none';
+            document.getElementById('info-topologias').style.display = 'none';
+        }
+
+        // Função para exibir as informações quando clica nos cards ou botões
+        function showInfo(item) {
+            // Verifica qual aba está aberta para exibir na caixa certa
+            const isCabos = ['par-trancado', 'fibra', 'wireless'].includes(item);
+            
+            if (isCabos) {
+                const infoDiv = document.getElementById('info-cabos');
+                infoDiv.innerHTML = data[item];
+                infoDiv.style.display = 'block'; // Mostra a div
+            } else {
+                const infoDiv = document.getElementById('info-topologias');
+                infoDiv.innerHTML = data[item];
+                infoDiv.style.display = 'block'; // Mostra a div
+            }
+        }
+    </script>
+</body>
+</html>
