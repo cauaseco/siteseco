@@ -3,15 +3,26 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>⚡ Guia Visual de Redes para Automação</title>
+    <title>🏭 Fábrica 4.0 - Centro de Controle de Redes</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
-        /* ===== RESET E BASE ===== */
+        /* ===== RESET ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        /* ===== PARTÍCULAS (CANVAS) ===== */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
         }
 
         body {
@@ -21,41 +32,24 @@
             align-items: center;
             padding: 2rem 1rem;
             background: #0b0f1a;
-            /* fundo escuro com grid sutil */
-            background-image:
-                radial-gradient(circle at 20% 30%, rgba(0, 150, 255, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(100, 0, 255, 0.05) 0%, transparent 50%),
-                linear-gradient(135deg, #0b0f1a 0%, #141c2b 100%);
+            position: relative;
+            overflow-x: hidden;
         }
 
         /* ===== PAINEL PRINCIPAL ===== */
         .main-panel {
-            max-width: 1300px;
+            max-width: 1400px;
             width: 100%;
-            background: rgba(18, 28, 46, 0.75);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
+            background: rgba(18, 28, 46, 0.82);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-radius: 56px;
             padding: 2.2rem 2.8rem;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow:
-                0 40px 80px -20px rgba(0, 0, 0, 0.8),
-                inset 0 0 0 1px rgba(255, 255, 255, 0.04);
-            transition: 0.4s;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.9), inset 0 0 0 1px rgba(255, 255, 255, 0.03);
             position: relative;
-            overflow: hidden;
-        }
-
-        /* brilho sutil no canto */
-        .main-panel::before {
-            content: '';
-            position: absolute;
-            top: -30%;
-            left: -20%;
-            width: 60%;
-            height: 60%;
-            background: radial-gradient(circle, rgba(0, 180, 255, 0.06) 0%, transparent 70%);
-            pointer-events: none;
+            z-index: 1;
+            transition: 0.4s;
         }
 
         /* ===== HEADER ===== */
@@ -83,7 +77,43 @@
         .header h1 i {
             color: #4a9eff;
             font-size: 2.8rem;
-            filter: drop-shadow(0 0 12px rgba(74, 158, 255, 0.3));
+            filter: drop-shadow(0 0 20px rgba(74, 158, 255, 0.3));
+            animation: pulse-glow 2s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%,
+            100% {
+                filter: drop-shadow(0 0 20px rgba(74, 158, 255, 0.3));
+            }
+            50% {
+                filter: drop-shadow(0 0 40px rgba(74, 158, 255, 0.6));
+            }
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #9bc1ff;
+            font-size: 0.9rem;
+        }
+
+        .stat-item .num {
+            font-weight: 700;
+            color: #fff;
+            font-size: 1.1rem;
         }
 
         .header-badge {
@@ -141,7 +171,14 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .theme-toggle {
+        .subhead-actions {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .theme-toggle,
+        .export-btn {
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.08);
             color: #c0d4f0;
@@ -155,8 +192,18 @@
             gap: 8px;
         }
 
-        .theme-toggle:hover {
+        .theme-toggle:hover,
+        .export-btn:hover {
             background: rgba(255, 255, 255, 0.08);
+        }
+
+        .export-btn {
+            background: rgba(74, 158, 255, 0.1);
+            border-color: rgba(74, 158, 255, 0.2);
+        }
+
+        .export-btn:hover {
+            background: rgba(74, 158, 255, 0.2);
         }
 
         /* ===== TABS ===== */
@@ -168,13 +215,14 @@
             padding-bottom: 0.1rem;
             position: relative;
             z-index: 2;
+            flex-wrap: wrap;
         }
 
         .tab-btn {
             background: transparent;
             border: none;
             padding: 0.8rem 2.2rem;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             font-weight: 600;
             color: #7a93b9;
             border-radius: 40px 40px 0 0;
@@ -205,7 +253,6 @@
             color: #4a9eff;
         }
 
-        /* ===== CONTEÚDO DAS ABAS ===== */
         .tab-content {
             display: none;
             animation: fadeUp 0.35s ease;
@@ -231,7 +278,7 @@
         /* ===== CARDS (Cabos) ===== */
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
             margin: 1.2rem 0 0.8rem;
         }
@@ -239,12 +286,11 @@
         .card {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
             border-radius: 32px;
             padding: 2rem 1.5rem 1.8rem;
             border: 1px solid rgba(255, 255, 255, 0.06);
             box-shadow: 0 12px 28px -12px rgba(0, 0, 0, 0.4);
-            transition: 0.25s ease;
+            transition: 0.3s ease;
             cursor: pointer;
             display: flex;
             flex-direction: column;
@@ -254,7 +300,7 @@
             overflow: hidden;
         }
 
-        .card::after {
+        .card::before {
             content: '';
             position: absolute;
             top: 0;
@@ -266,7 +312,7 @@
             transition: 0.3s;
         }
 
-        .card:hover::after {
+        .card:hover::before {
             opacity: 1;
         }
 
@@ -291,6 +337,20 @@
             margin-bottom: 0.8rem;
             transition: 0.3s;
             border: 1px solid rgba(74, 158, 255, 0.1);
+            position: relative;
+        }
+
+        .card .icon-wrap .status-led {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #4ade80;
+            box-shadow: 0 0 12px #4ade80;
+            animation: pisca 1.5s infinite;
+            border: 2px solid rgba(0, 0, 0, 0.3);
         }
 
         .card:hover .icon-wrap {
@@ -317,8 +377,34 @@
             letter-spacing: 0.5px;
         }
 
+        .card .speed-bar {
+            width: 100%;
+            margin-top: 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            height: 6px;
+            overflow: hidden;
+        }
+
+        .card .speed-bar .fill {
+            height: 100%;
+            border-radius: 20px;
+            background: linear-gradient(90deg, #4a9eff, #7c3aed);
+            transition: width 1s ease;
+            width: 0%;
+        }
+
+        .card .speed-label {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            font-size: 0.7rem;
+            color: #7a93b9;
+            margin-top: 4px;
+        }
+
         .card .card-hint {
-            margin-top: 1rem;
+            margin-top: 0.8rem;
             color: #7a93b9;
             font-size: 0.85rem;
             display: flex;
@@ -432,7 +518,7 @@
             padding: 2rem 2.2rem 2rem;
             border: 1px solid rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(4px);
-            min-height: 280px;
+            min-height: 320px;
         }
 
         .topo-panel h3 {
@@ -458,6 +544,51 @@
             display: inline-block;
             margin: 0.3rem 0 1.4rem;
             border: 1px solid rgba(74, 158, 255, 0.04);
+        }
+
+        /* ===== DIAGRAMA SVG ===== */
+        .topo-diagram {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            padding: 1rem;
+            margin: 1rem 0 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .topo-diagram svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .topo-diagram .device {
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .topo-diagram .device:hover {
+            filter: brightness(1.3);
+        }
+
+        .topo-diagram .device.failed {
+            fill: #f87171 !important;
+            stroke: #ef4444 !important;
+        }
+
+        .topo-diagram .link {
+            transition: 0.3s;
+        }
+
+        .topo-diagram .link.failed {
+            stroke: #f87171 !important;
+            stroke-dasharray: 8 4;
+            animation: dash 0.5s linear infinite;
+        }
+
+        @keyframes dash {
+            to {
+                stroke-dashoffset: -12;
+            }
         }
 
         .topo-grid {
@@ -524,6 +655,180 @@
             border: 1px solid rgba(255, 255, 255, 0.03);
         }
 
+        .topo-metrics {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .metric-box {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 16px;
+            padding: 0.8rem 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .metric-box .label {
+            font-size: 0.8rem;
+            color: #7a93b9;
+        }
+
+        .metric-box .value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #eef4ff;
+        }
+
+        .metric-box .value.good {
+            color: #4ade80;
+        }
+        .metric-box .value.warning {
+            color: #fbbf24;
+        }
+        .metric-box .value.danger {
+            color: #f87171;
+        }
+
+        /* ===== SIMULADOR ===== */
+        .simulator-controls {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+            margin: 1rem 0 1.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 1rem 1.5rem;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .simulator-controls label {
+            color: #b0c8e8;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .simulator-controls input[type="range"] {
+            width: 160px;
+            height: 4px;
+            -webkit-appearance: none;
+            background: linear-gradient(90deg, #4a9eff, #7c3aed);
+            border-radius: 10px;
+            outline: none;
+        }
+
+        .simulator-controls input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #4a9eff;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(74, 158, 255, 0.3);
+        }
+
+        .sim-btn {
+            background: rgba(74, 158, 255, 0.15);
+            border: 1px solid rgba(74, 158, 255, 0.2);
+            color: #fff;
+            padding: 0.5rem 1.8rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sim-btn:hover {
+            background: rgba(74, 158, 255, 0.25);
+        }
+
+        .sim-btn.running {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+
+        .chart-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .chart-box {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 20px;
+            padding: 1.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .chart-box .chart-label {
+            color: #8aa3c9;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .chart-box .chart-bar {
+            height: 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .chart-box .chart-bar .fill {
+            height: 100%;
+            border-radius: 20px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .chart-box .chart-bar .fill.collision {
+            background: linear-gradient(90deg, #fbbf24, #f87171);
+        }
+        .chart-box .chart-bar .fill.latency {
+            background: linear-gradient(90deg, #4a9eff, #8b5cf6);
+        }
+        .chart-box .chart-bar .fill.throughput {
+            background: linear-gradient(90deg, #4ade80, #22d3ee);
+        }
+
+        .alert-box {
+            margin-top: 1rem;
+            padding: 0.8rem 1.2rem;
+            border-radius: 16px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+        }
+
+        .alert-box.show {
+            display: flex;
+        }
+
+        .alert-box.warning {
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+        }
+
+        .alert-box.danger {
+            background: rgba(248, 113, 113, 0.1);
+            border: 1px solid rgba(248, 113, 113, 0.2);
+            color: #f87171;
+        }
+
         /* ===== RESPONSIVO ===== */
         @media (max-width: 780px) {
             .main-panel {
@@ -542,11 +847,15 @@
             .topo-panel {
                 padding: 1.5rem;
             }
+            .simulator-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
         }
 
         @media (max-width: 480px) {
             .header h1 {
-                font-size: 1.5rem;
+                font-size: 1.4rem;
                 flex-wrap: wrap;
             }
             .header-badge {
@@ -558,18 +867,20 @@
                 height: 70px;
                 font-size: 2.4rem;
             }
+            .stat-item {
+                font-size: 0.75rem;
+                padding: 0.2rem 0.8rem;
+            }
         }
 
         /* ===== TEMA CLARO ===== */
         body.light {
             background: #eef3fc;
-            background-image: radial-gradient(circle at 20% 30%, rgba(0, 150, 255, 0.04) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(100, 0, 255, 0.04) 0%, transparent 50%);
         }
 
         body.light .main-panel {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(18px);
+            background: rgba(255, 255, 255, 0.78);
+            backdrop-filter: blur(20px);
             border-color: rgba(255, 255, 255, 0.2);
         }
 
@@ -668,7 +979,8 @@
             color: #1f3a5e;
         }
 
-        body.light .theme-toggle {
+        body.light .theme-toggle,
+        body.light .export-btn {
             color: #1f3a5e;
             border-color: rgba(0, 0, 0, 0.06);
         }
@@ -681,227 +993,60 @@
         body.light .header-badge .led {
             background: #22c55e;
         }
+        body.light .stat-item {
+            color: #1f3a5e;
+            border-color: rgba(0, 0, 0, 0.04);
+        }
+        body.light .stat-item .num {
+            color: #0b1a33;
+        }
+        body.light .chart-box {
+            background: rgba(0, 0, 0, 0.02);
+        }
+        body.light .simulator-controls {
+            background: rgba(0, 0, 0, 0.02);
+        }
+        body.light .sim-btn {
+            color: #0b1a33;
+        }
+        body.light .topo-diagram {
+            background: rgba(0, 0, 0, 0.03);
+        }
+        body.light .metric-box {
+            background: rgba(0, 0, 0, 0.02);
+        }
+        body.light .metric-box .value {
+            color: #0b1a33;
+        }
     </style>
 </head>
 <body>
+
+    <!-- ===== CANVAS DE PARTÍCULAS ===== -->
+    <canvas id="particles-canvas"></canvas>
 
     <div class="main-panel">
 
         <!-- HEADER -->
         <div class="header">
-            <h1><i class="fas fa-microchip"></i> Guia Visual de Redes para Automação</h1>
-            <div class="header-badge">
-                <span class="led"></span>
-                <span>Industrial IoT · Chão de fábrica</span>
+            <h1><i class="fas fa-microchip"></i> Fábrica 4.0</h1>
+            <div class="header-stats">
+                <div class="stat-item">
+                    <i class="fas fa-plug"></i>
+                    <span class="num" id="deviceCount">0</span>
+                    <span>dispositivos</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-signal"></i>
+                    <span id="networkHealth">100%</span>
+                    <span>saúde</span>
+                </div>
+                <div class="header-badge">
+                    <span class="led"></span>
+                    <span>Industrial IoT</span>
+                </div>
             </div>
         </div>
 
         <div class="subhead">
-            <p><i class="fas fa-robot"></i> Clique nos cards para ver onde cada cabo é usado</p>
-            <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i> <span>Modo Claro</span></button>
-        </div>
-
-        <!-- TABS -->
-        <div class="tabs">
-            <button class="tab-btn active" data-tab="tab1"><i class="fas fa-ethernet"></i> Cabos Industriais</button>
-            <button class="tab-btn" data-tab="tab2"><i class="fas fa-project-diagram"></i> Topologias</button>
-        </div>
-
-        <!-- ===== ABA 1: CABOS ===== -->
-        <div id="tab1" class="tab-content active">
-            <div class="cards-grid">
-
-                <!-- Par Trançado -->
-                <div class="card" data-card="par-trancado">
-                    <div class="icon-wrap"><i class="fas fa-network-wired"></i></div>
-                    <h3>Par Trançado</h3>
-                    <div class="badge">Ethernet / PROFINET</div>
-                    <div class="card-hint"><i class="fas fa-mouse-pointer"></i> Clique para detalhes</div>
-                    <div class="explanation-box hidden-detail" id="exp-par-trancado">
-                        <i class="fas fa-robot"></i>
-                        <div>
-                            <strong>Uso na fábrica:</strong> Conexão de CLPs, sensores inteligentes, IHMs e drives.
-                            <div class="exemplo"><i class="fas fa-check-circle"></i> Exemplo: célula robótica, esteiras de montagem</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Fibra Óptica -->
-                <div class="card" data-card="fibra-optica">
-                    <div class="icon-wrap"><i class="fas fa-fiber-optic"></i></div>
-                    <h3>Fibra Óptica</h3>
-                    <div class="badge">Alta velocidade</div>
-                    <div class="card-hint"><i class="fas fa-mouse-pointer"></i> Clique para detalhes</div>
-                    <div class="explanation-box hidden-detail" id="exp-fibra-optica">
-                        <i class="fas fa-tachometer-alt"></i>
-                        <div>
-                            <strong>Uso na fábrica:</strong> Backbone da rede, interligação de prédios, ambientes com alta interferência.
-                            <div class="exemplo"><i class="fas fa-check-circle"></i> Exemplo: fornos, solda a arco, subestações</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Wireless -->
-                <div class="card" data-card="wireless">
-                    <div class="icon-wrap"><i class="fas fa-wifi"></i></div>
-                    <h3>Wireless</h3>
-                    <div class="badge">Wi-Fi / 5G</div>
-                    <div class="card-hint"><i class="fas fa-mouse-pointer"></i> Clique para detalhes</div>
-                    <div class="explanation-box hidden-detail" id="exp-wireless">
-                        <i class="fas fa-mobile-alt"></i>
-                        <div>
-                            <strong>Uso na fábrica:</strong> AGVs (robôs móveis), tablets de operação, sensores remotos.
-                            <div class="exemplo"><i class="fas fa-check-circle"></i> Exemplo: armazéns, monitoramento de tanques</div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div style="margin-top: 1.2rem; color: #7a93b9; font-size: 0.9rem; display: flex; gap: 12px; flex-wrap: wrap;">
-                <span><i class="fas fa-circle" style="color:#4a9eff; font-size: 0.6rem;"></i> Clique em um card para ver a aplicação</span>
-                <span><i class="fas fa-circle" style="color:#4ade80; font-size: 0.6rem;"></i> Destaque azul = card selecionado</span>
-            </div>
-        </div>
-
-        <!-- ===== ABA 2: TOPOLOGIAS ===== -->
-        <div id="tab2" class="tab-content">
-            <div class="topo-buttons">
-                <button class="topo-btn active" data-topo="estrela"><i class="fas fa-star"></i> Layout em Estrela</button>
-                <button class="topo-btn" data-topo="barramento"><i class="fas fa-bars"></i> Layout em Barramento</button>
-            </div>
-
-            <div class="topo-panel" id="topoPanel">
-                <div id="topoContent"></div>
-            </div>
-        </div>
-
-    </div>
-
-    <script>
-        (function() {
-            // ===== TABS =====
-            const tabBtns = document.querySelectorAll('.tab-btn');
-            const tabContents = {
-                tab1: document.getElementById('tab1'),
-                tab2: document.getElementById('tab2'),
-            };
-
-            tabBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const tabId = this.dataset.tab;
-                    tabBtns.forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    Object.keys(tabContents).forEach(key => {
-                        tabContents[key].classList.toggle('active', key === tabId);
-                    });
-                });
-            });
-
-            // ===== CARDS =====
-            const cards = document.querySelectorAll('.card');
-            const expMap = {
-                'par-trancado': document.getElementById('exp-par-trancado'),
-                'fibra-optica': document.getElementById('exp-fibra-optica'),
-                'wireless': document.getElementById('exp-wireless'),
-            };
-
-            // Garantir que todas as explicações comecem ocultas
-            Object.values(expMap).forEach(el => el.classList.add('hidden-detail'));
-
-            cards.forEach(card => {
-                card.addEventListener('click', function(e) {
-                    const key = this.dataset.card;
-                    // Remove active de todos os cards
-                    cards.forEach(c => c.classList.remove('active-card'));
-                    this.classList.add('active-card');
-
-                    // Oculta todas as explicações
-                    Object.values(expMap).forEach(el => el.classList.add('hidden-detail'));
-
-                    // Mostra a explicação correspondente
-                    const target = expMap[key];
-                    if (target) {
-                        target.classList.remove('hidden-detail');
-                    }
-                });
-            });
-
-            // ===== TOPOLOGIAS =====
-            const topoData = {
-                estrela: {
-                    titulo: 'Layout em Estrela',
-                    icone: 'fa-star',
-                    desc: 'Todos os dispositivos se conectam a um switch central. É o padrão mais usado em fábricas modernas.',
-                    vantagens: [
-                        'Manutenção simplificada: falha em um dispositivo não afeta os outros.',
-                        'Alta flexibilidade para expansão (basta conectar no switch).',
-                        'Diagnóstico rápido: cada link é monitorado individualmente.',
-                        'Suporte a VLANs e QoS para tráfego crítico.'
-                    ],
-                    desvantagens: [
-                        'Ponto único de falha: se o switch central falha, toda a rede para.',
-                        'Custo maior com switch central e cabeamento dedicado.',
-                        'Requer infraestrutura organizada (racks, patch panels).'
-                    ]
-                },
-                barramento: {
-                    titulo: 'Layout em Barramento',
-                    icone: 'fa-bars',
-                    desc: 'Todos os dispositivos compartilham um único cabo (backbone) com terminações. Comum em redes legadas.',
-                    vantagens: [
-                        'Menor custo de cabo e infraestrutura (um único backbone).',
-                        'Simples de implementar em linhas de produção lineares.',
-                        'Menos equipamentos ativos (repetidores ou hubs).'
-                    ],
-                    desvantagens: [
-                        'Falha no cabo principal interrompe toda a comunicação.',
-                        'Difícil isolar falhas (toda rede é afetada).',
-                        'Desempenho degrada com muitos dispositivos (colisões).',
-                        'Menor segurança e limitação de distância.'
-                    ]
-                }
-            };
-
-            function renderTopo(key) {
-                const data = topoData[key];
-                if (!data) return;
-                const container = document.getElementById('topoContent');
-                container.innerHTML = `
-                    <h3><i class="fas ${data.icone}"></i> ${data.titulo}</h3>
-                    <div class="topo-desc"><i class="fas fa-info-circle"></i> ${data.desc}</div>
-                    <div class="topo-grid">
-                        <div class="topo-col vantagens">
-                            <h4><i class="fas fa-check-circle" style="color:#4ade80;"></i> Vantagens</h4>
-                            <ul>
-                                ${data.vantagens.map(item => `<li><i class="fas fa-plus-circle"></i> ${item}</li>`).join('')}
-                            </ul>
-                        </div>
-                        <div class="topo-col desvantagens">
-                            <h4><i class="fas fa-exclamation-triangle" style="color:#f87171;"></i> Desvantagens</h4>
-                            <ul>
-                                ${data.desvantagens.map(item => `<li><i class="fas fa-minus-circle"></i> ${item}</li>`).join('')}
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="topo-footer">
-                        <i class="fas fa-microchip"></i> Aplicação no chão de fábrica: 
-                        ${key === 'estrela' ? 'Células de manufatura, CLPs distribuídos, redes de segurança.' : 'Sistemas legados, esteiras longas, redes com poucos nós.'}
-                    </div>
-                `;
-            }
-
-            // Botões de topologia
-            const topoBtns = document.querySelectorAll('.topo-btn');
-            topoBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    topoBtns.forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    renderTopo(this.dataset.topologia);
-                });
-            });
-
-            // Inicializa com Estrela
-            renderTopo('estrela');
-
-            // ===== TEMA CLARO/ESCURO =====
-            const themeToggle
+            <p><i class="fas fa-robot"></i> Centro de Controle de Redes Industriais</p
