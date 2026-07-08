@@ -1,632 +1,907 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Guia Visual de Redes para Automação</title>
-  <!-- Font Awesome (opcional, mas enriquece visual) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>⚡ Guia Visual de Redes para Automação</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        /* ===== RESET E BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
 
-    body {
-      background: linear-gradient(145deg, #f5f7fc 0%, #e9edf5 100%);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 2rem 1rem;
-    }
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1rem;
+            background: #0b0f1a;
+            /* fundo escuro com grid sutil */
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(0, 150, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(100, 0, 255, 0.05) 0%, transparent 50%),
+                linear-gradient(135deg, #0b0f1a 0%, #141c2b 100%);
+        }
 
-    .main-card {
-      max-width: 1300px;
-      width: 100%;
-      background: rgba(255, 255, 255, 0.75);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-radius: 48px;
-      box-shadow: 0 25px 50px -8px rgba(0, 20, 40, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.6);
-      padding: 2rem 2.5rem;
-      transition: 0.3s;
-    }
+        /* ===== PAINEL PRINCIPAL ===== */
+        .main-panel {
+            max-width: 1300px;
+            width: 100%;
+            background: rgba(18, 28, 46, 0.75);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 56px;
+            padding: 2.2rem 2.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow:
+                0 40px 80px -20px rgba(0, 0, 0, 0.8),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+            transition: 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
 
-    h1 {
-      font-size: 2.6rem;
-      font-weight: 700;
-      color: #0b1a33;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      letter-spacing: -0.5px;
-      margin-bottom: 0.25rem;
-    }
+        /* brilho sutil no canto */
+        .main-panel::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            left: -20%;
+            width: 60%;
+            height: 60%;
+            background: radial-gradient(circle, rgba(0, 180, 255, 0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
 
-    h1 i {
-      color: #2a6fdb;
-      font-size: 2.8rem;
-    }
+        /* ===== HEADER ===== */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
 
-    .subhead {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      border-bottom: 2px solid rgba(42, 111, 219, 0.2);
-      padding-bottom: 0.75rem;
-      margin-bottom: 2rem;
-      flex-wrap: wrap;
-    }
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #f0f4ff;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
 
-    .subhead p {
-      color: #2c3e5c;
-      font-weight: 500;
-      font-size: 1.1rem;
-      background: rgba(42, 111, 219, 0.08);
-      padding: 0.3rem 1.2rem;
-      border-radius: 40px;
-      backdrop-filter: blur(4px);
-      border: 1px solid rgba(42, 111, 219, 0.15);
-    }
+        .header h1 i {
+            color: #4a9eff;
+            font-size: 2.8rem;
+            filter: drop-shadow(0 0 12px rgba(74, 158, 255, 0.3));
+        }
 
-    /* TABS */
-    .tabs {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 2.2rem;
-      border-bottom: 2px solid rgba(0, 0, 0, 0.06);
-      padding-bottom: 0.2rem;
-    }
+        .header-badge {
+            background: rgba(74, 158, 255, 0.12);
+            border: 1px solid rgba(74, 158, 255, 0.2);
+            padding: 0.4rem 1.6rem;
+            border-radius: 60px;
+            color: #9bc1ff;
+            font-weight: 500;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(4px);
+        }
 
-    .tab-btn {
-      background: transparent;
-      border: none;
-      padding: 0.9rem 2.2rem;
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: #3b4d6b;
-      border-radius: 40px 40px 0 0;
-      cursor: pointer;
-      transition: 0.2s;
-      letter-spacing: 0.3px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: rgba(255, 255, 255, 0.3);
-      backdrop-filter: blur(2px);
-    }
+        .header-badge .led {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #4ade80;
+            box-shadow: 0 0 12px #4ade80;
+            animation: pisca 1.8s infinite;
+        }
 
-    .tab-btn i {
-      font-size: 1.3rem;
-      color: #3b4d6b;
-    }
+        @keyframes pisca {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.2;
+            }
+        }
 
-    .tab-btn:hover {
-      background: rgba(42, 111, 219, 0.06);
-      color: #0b1a33;
-    }
+        .subhead {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 0.8rem;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 2;
+        }
 
-    .tab-btn.active {
-      background: #ffffff;
-      color: #0b1a33;
-      box-shadow: 0 -4px 12px rgba(0, 20, 40, 0.08), inset 0 -2px 0 #2a6fdb;
-    }
+        .subhead p {
+            color: #8aa3c9;
+            font-weight: 400;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.3rem 1.4rem;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
 
-    .tab-btn.active i {
-      color: #2a6fdb;
-    }
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #c0d4f0;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-    .tab-content {
-      display: none;
-      animation: fade 0.25s ease;
-    }
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
 
-    .tab-content.active {
-      display: block;
-    }
+        /* ===== TABS ===== */
+        .tabs {
+            display: flex;
+            gap: 0.3rem;
+            margin-bottom: 2.2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 0.1rem;
+            position: relative;
+            z-index: 2;
+        }
 
-    @keyframes fade {
-      0% { opacity: 0.4; transform: translateY(6px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 0.8rem 2.2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #7a93b9;
+            border-radius: 40px 40px 0 0;
+            cursor: pointer;
+            transition: 0.25s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+        }
 
-    /* CARDS (cabos) */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 2rem;
-      margin: 1.5rem 0 0.5rem;
-    }
+        .tab-btn i {
+            font-size: 1.2rem;
+        }
 
-    .card {
-      background: #ffffffcc;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border-radius: 32px;
-      padding: 1.8rem 1.5rem 2rem;
-      box-shadow: 0 15px 30px -12px rgba(0, 0, 0, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.7);
-      transition: 0.2s ease;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
+        .tab-btn:hover {
+            color: #d0e2ff;
+            background: rgba(255, 255, 255, 0.03);
+        }
 
-    .card:hover {
-      transform: scale(1.02);
-      background: #ffffff;
-      box-shadow: 0 20px 40px -12px rgba(0, 20, 40, 0.25);
-      border-color: #2a6fdb50;
-    }
+        .tab-btn.active {
+            color: #ffffff;
+            background: rgba(74, 158, 255, 0.08);
+            box-shadow: inset 0 -2px 0 #4a9eff;
+        }
 
-    .card i {
-      font-size: 3.8rem;
-      color: #1f4e9e;
-      margin-bottom: 0.7rem;
-      background: #eef4ff;
-      padding: 18px;
-      border-radius: 60px;
-      width: 90px;
-      height: 90px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: 0.2s;
-    }
+        .tab-btn.active i {
+            color: #4a9eff;
+        }
 
-    .card h3 {
-      font-size: 1.8rem;
-      font-weight: 600;
-      color: #0b1a33;
-      margin-bottom: 0.5rem;
-    }
+        /* ===== CONTEÚDO DAS ABAS ===== */
+        .tab-content {
+            display: none;
+            animation: fadeUp 0.35s ease;
+            position: relative;
+            z-index: 2;
+        }
 
-    .card .badge {
-      background: #2a6fdb10;
-      color: #1f4e9e;
-      font-weight: 500;
-      padding: 0.2rem 1rem;
-      border-radius: 30px;
-      font-size: 0.8rem;
-      border: 1px solid #2a6fdb20;
-      margin-top: 0.2rem;
-    }
+        .tab-content.active {
+            display: block;
+        }
 
-    .card-detail {
-      margin-top: 1.2rem;
-      background: #f0f5ff;
-      padding: 0.8rem 1.2rem;
-      border-radius: 60px;
-      color: #0b1a33;
-      font-weight: 500;
-      font-size: 0.95rem;
-      width: 100%;
-      border: 1px solid #d4e2ff;
-      transition: 0.15s;
-    }
+        @keyframes fadeUp {
+            0% {
+                opacity: 0.3;
+                transform: translateY(12px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    .card-detail i {
-      font-size: 1rem;
-      background: transparent;
-      padding: 0;
-      width: auto;
-      height: auto;
-      margin-right: 6px;
-      color: #1f4e9e;
-    }
+        /* ===== CARDS (Cabos) ===== */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: 2rem;
+            margin: 1.2rem 0 0.8rem;
+        }
 
-    .card.active-card {
-      border: 2px solid #2a6fdb;
-      background: #f8fbff;
-    }
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border-radius: 32px;
+            padding: 2rem 1.5rem 1.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 12px 28px -12px rgba(0, 0, 0, 0.4);
+            transition: 0.25s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
 
-    .explanation-box {
-      margin-top: 1.5rem;
-      background: #eef4fc;
-      border-radius: 28px;
-      padding: 1.2rem 2rem;
-      border-left: 6px solid #2a6fdb;
-      box-shadow: inset 0 1px 4px rgba(0,0,0,0.02);
-      font-size: 1.05rem;
-      color: #1a2d47;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #4a9eff, transparent);
+            opacity: 0;
+            transition: 0.3s;
+        }
 
-    .explanation-box i {
-      font-size: 1.8rem;
-      color: #2a6fdb;
-      background: white;
-      padding: 10px;
-      border-radius: 50%;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.02);
-    }
+        .card:hover::after {
+            opacity: 1;
+        }
 
-    .explanation-box span {
-      flex: 1;
-    }
+        .card:hover {
+            transform: translateY(-6px) scale(1.01);
+            border-color: rgba(74, 158, 255, 0.25);
+            box-shadow: 0 24px 48px -16px rgba(0, 0, 0, 0.6);
+            background: rgba(255, 255, 255, 0.06);
+        }
 
-    /* Topologias */
-    .topo-buttons {
-      display: flex;
-      gap: 1.2rem;
-      flex-wrap: wrap;
-      margin: 1rem 0 1.8rem;
-    }
+        .card .icon-wrap {
+            font-size: 3.2rem;
+            color: #4a9eff;
+            background: rgba(74, 158, 255, 0.08);
+            padding: 18px;
+            border-radius: 60px;
+            width: 90px;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.8rem;
+            transition: 0.3s;
+            border: 1px solid rgba(74, 158, 255, 0.1);
+        }
 
-    .topo-btn {
-      background: white;
-      border: 2px solid #d0ddec;
-      padding: 0.8rem 2rem;
-      border-radius: 60px;
-      font-weight: 600;
-      font-size: 1.15rem;
-      color: #1f3a5e;
-      cursor: pointer;
-      transition: 0.15s;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.02);
-      flex: 0 1 auto;
-    }
+        .card:hover .icon-wrap {
+            background: rgba(74, 158, 255, 0.15);
+            box-shadow: 0 0 30px rgba(74, 158, 255, 0.1);
+        }
 
-    .topo-btn i {
-      font-size: 1.3rem;
-      color: #2a6fdb;
-    }
+        .card h3 {
+            font-size: 1.7rem;
+            font-weight: 600;
+            color: #eef4ff;
+            margin-bottom: 0.2rem;
+        }
 
-    .topo-btn.active {
-      background: #0b1a33;
-      border-color: #0b1a33;
-      color: white;
-    }
+        .card .badge {
+            background: rgba(74, 158, 255, 0.12);
+            color: #8bb9ff;
+            font-weight: 500;
+            padding: 0.15rem 1.2rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            border: 1px solid rgba(74, 158, 255, 0.1);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-    .topo-btn.active i {
-      color: white;
-    }
+        .card .card-hint {
+            margin-top: 1rem;
+            color: #7a93b9;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 0.4rem 1.2rem;
+            border-radius: 60px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
 
-    .topo-btn:hover {
-      background: #e6edf8;
-      border-color: #2a6fdb70;
-    }
+        .card.active-card {
+            border-color: #4a9eff;
+            background: rgba(74, 158, 255, 0.06);
+            box-shadow: 0 0 40px rgba(74, 158, 255, 0.05);
+        }
 
-    .topo-panel {
-      background: white;
-      border-radius: 32px;
-      padding: 2rem 2rem 1.8rem;
-      box-shadow: 0 12px 24px -12px rgba(0,0,0,0.08);
-      border: 1px solid rgba(255,255,255,0.5);
-      margin-top: 0.25rem;
-    }
+        /* ===== EXPLICAÇÃO DOS CABOS ===== */
+        .explanation-box {
+            margin-top: 1.8rem;
+            background: rgba(74, 158, 255, 0.04);
+            border-radius: 24px;
+            padding: 1.2rem 2rem;
+            border-left: 5px solid #4a9eff;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            color: #d0e2ff;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            flex-wrap: wrap;
+            transition: 0.3s;
+        }
 
-    .topo-panel h3 {
-      font-size: 1.9rem;
-      font-weight: 600;
-      color: #0b1a33;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 0.5rem;
-    }
+        .explanation-box i {
+            font-size: 1.8rem;
+            color: #4a9eff;
+            background: rgba(74, 158, 255, 0.08);
+            padding: 10px 14px;
+            border-radius: 50%;
+            margin-top: 2px;
+        }
 
-    .topo-panel h3 i {
-      color: #2a6fdb;
-    }
+        .explanation-box strong {
+            color: #ffffff;
+        }
 
-    .topo-desc {
-      font-size: 1.08rem;
-      color: #1f3450;
-      background: #f2f7ff;
-      padding: 0.8rem 1.5rem;
-      border-radius: 40px;
-      display: inline-block;
-      margin: 0.5rem 0 1.2rem;
-    }
+        .explanation-box .exemplo {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            color: #8bb9ff;
+            margin-top: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
 
-    .topo-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-      margin-top: 1rem;
-    }
+        .hidden-detail {
+            display: none !important;
+        }
 
-    .topo-col {
-      background: #f8faff;
-      border-radius: 28px;
-      padding: 1.2rem 1.6rem 1.6rem;
-    }
+        /* ===== TOPOLOGIAS ===== */
+        .topo-buttons {
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+            margin: 0.5rem 0 2rem;
+        }
 
-    .topo-col h4 {
-      font-size: 1.3rem;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #0b1a33;
-      border-bottom: 2px solid #dce6f5;
-      padding-bottom: 0.5rem;
-      margin-bottom: 0.8rem;
-    }
+        .topo-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 0.7rem 2.2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #9bb3d6;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            backdrop-filter: blur(4px);
+        }
 
-    .topo-col ul {
-      list-style: none;
-      padding-left: 0.2rem;
-    }
+        .topo-btn i {
+            font-size: 1.2rem;
+            color: #4a9eff;
+        }
 
-    .topo-col li {
-      padding: 0.45rem 0;
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      color: #1f3450;
-      font-size: 1rem;
-      border-bottom: 1px dashed rgba(0,0,0,0.04);
-    }
+        .topo-btn:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(74, 158, 255, 0.2);
+        }
 
-    .topo-col li i {
-      width: 22px;
-      color: #2a6fdb;
-      font-size: 1rem;
-      margin-top: 0.2rem;
-    }
+        .topo-btn.active {
+            background: rgba(74, 158, 255, 0.12);
+            border-color: #4a9eff;
+            color: #ffffff;
+            box-shadow: 0 0 24px rgba(74, 158, 255, 0.05);
+        }
 
-    .topo-col.vantagens li i {
-      color: #1f9e5e;
-    }
+        .topo-btn.active i {
+            color: #ffffff;
+        }
 
-    .topo-col.desvantagens li i {
-      color: #c94a4a;
-    }
+        .topo-panel {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 32px;
+            padding: 2rem 2.2rem 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(4px);
+            min-height: 280px;
+        }
 
-    .topo-placeholder {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem 0 1rem;
-      color: #5c6f8c;
-      font-size: 1.1rem;
-      gap: 4px;
-    }
+        .topo-panel h3 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            color: #eef4ff;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 0.4rem;
+        }
 
-    .topo-placeholder i {
-      font-size: 2.5rem;
-      color: #a0b8d9;
-    }
+        .topo-panel h3 i {
+            color: #4a9eff;
+        }
 
-    @media (max-width: 700px) {
-      .main-card { padding: 1.5rem; }
-      h1 { font-size: 2rem; }
-      .tab-btn { padding: 0.6rem 1.2rem; font-size: 1rem; }
-      .topo-grid { grid-template-columns: 1fr; }
-    }
+        .topo-desc {
+            font-size: 1.05rem;
+            color: #b0c8e8;
+            background: rgba(74, 158, 255, 0.04);
+            padding: 0.5rem 1.6rem;
+            border-radius: 40px;
+            display: inline-block;
+            margin: 0.3rem 0 1.4rem;
+            border: 1px solid rgba(74, 158, 255, 0.04);
+        }
 
-    /* ocultar explicação inicial */
-    .hidden-detail {
-      display: none;
-    }
-    .explanation-box.hidden-detail {
-      display: none;
-    }
-    .explanation-box.visible {
-      display: flex;
-    }
+        .topo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 0.8rem;
+        }
 
-    /* ajustes */
-    .mt-2 { margin-top: 0.8rem; }
-  </style>
+        .topo-col {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 24px;
+            padding: 1.2rem 1.6rem 1.6rem;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .topo-col h4 {
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #d0e2ff;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .topo-col ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .topo-col li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            color: #b8ceec;
+            font-size: 0.98rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .topo-col li i {
+            width: 20px;
+            margin-top: 0.2rem;
+            font-size: 0.9rem;
+        }
+
+        .topo-col.vantagens li i {
+            color: #4ade80;
+        }
+        .topo-col.desvantagens li i {
+            color: #f87171;
+        }
+
+        .topo-footer {
+            margin-top: 1.6rem;
+            font-size: 0.9rem;
+            background: rgba(74, 158, 255, 0.03);
+            padding: 0.5rem 1.4rem;
+            border-radius: 60px;
+            color: #8aa3c9;
+            display: inline-block;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        /* ===== RESPONSIVO ===== */
+        @media (max-width: 780px) {
+            .main-panel {
+                padding: 1.5rem;
+            }
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            .tab-btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.95rem;
+            }
+            .topo-grid {
+                grid-template-columns: 1fr;
+            }
+            .topo-panel {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.5rem;
+                flex-wrap: wrap;
+            }
+            .header-badge {
+                font-size: 0.8rem;
+                padding: 0.2rem 1rem;
+            }
+            .card .icon-wrap {
+                width: 70px;
+                height: 70px;
+                font-size: 2.4rem;
+            }
+        }
+
+        /* ===== TEMA CLARO ===== */
+        body.light {
+            background: #eef3fc;
+            background-image: radial-gradient(circle at 20% 30%, rgba(0, 150, 255, 0.04) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(100, 0, 255, 0.04) 0%, transparent 50%);
+        }
+
+        body.light .main-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(18px);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        body.light .header h1 {
+            color: #0b1a33;
+        }
+
+        body.light .header-badge {
+            color: #1f4e9e;
+            background: rgba(74, 158, 255, 0.08);
+            border-color: rgba(74, 158, 255, 0.15);
+        }
+
+        body.light .subhead p {
+            color: #2c4a6a;
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        body.light .tab-btn {
+            color: #3b5a7a;
+        }
+        body.light .tab-btn:hover {
+            color: #0b1a33;
+        }
+        body.light .tab-btn.active {
+            color: #0b1a33;
+            background: rgba(74, 158, 255, 0.06);
+        }
+
+        body.light .card {
+            background: rgba(255, 255, 255, 0.5);
+            border-color: rgba(0, 0, 0, 0.04);
+        }
+        body.light .card:hover {
+            background: rgba(255, 255, 255, 0.8);
+            border-color: rgba(74, 158, 255, 0.3);
+        }
+        body.light .card h3 {
+            color: #0b1a33;
+        }
+        body.light .card .badge {
+            color: #1f4e9e;
+            background: rgba(74, 158, 255, 0.06);
+        }
+        body.light .card .card-hint {
+            color: #3b5a7a;
+        }
+        body.light .card .icon-wrap {
+            background: rgba(74, 158, 255, 0.06);
+        }
+        body.light .card.active-card {
+            background: rgba(74, 158, 255, 0.06);
+        }
+
+        body.light .explanation-box {
+            background: rgba(74, 158, 255, 0.04);
+            color: #1a2d47;
+        }
+        body.light .explanation-box strong {
+            color: #0b1a33;
+        }
+        body.light .explanation-box .exemplo {
+            color: #1f4e9e;
+        }
+
+        body.light .topo-btn {
+            color: #1f3a5e;
+            background: rgba(255, 255, 255, 0.4);
+        }
+        body.light .topo-btn.active {
+            background: #0b1a33;
+            color: white;
+            border-color: #0b1a33;
+        }
+        body.light .topo-btn.active i {
+            color: white;
+        }
+
+        body.light .topo-panel {
+            background: rgba(255, 255, 255, 0.4);
+        }
+        body.light .topo-panel h3 {
+            color: #0b1a33;
+        }
+        body.light .topo-desc {
+            color: #1f3a5e;
+            background: rgba(0, 0, 0, 0.02);
+        }
+        body.light .topo-col {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        body.light .topo-col h4 {
+            color: #0b1a33;
+        }
+        body.light .topo-col li {
+            color: #1f3a5e;
+        }
+
+        body.light .theme-toggle {
+            color: #1f3a5e;
+            border-color: rgba(0, 0, 0, 0.06);
+        }
+        body.light .theme-toggle:hover {
+            background: rgba(0, 0, 0, 0.03);
+        }
+        body.light .topo-footer {
+            color: #2c4a6a;
+        }
+        body.light .header-badge .led {
+            background: #22c55e;
+        }
+    </style>
 </head>
 <body>
-<div class="main-card">
 
-  <div class="subhead">
-    <h1><i class="fas fa-microchip"></i> Guia Visual de Redes para Automação</h1>
-    <p><i class="fas fa-industry"></i> Chão de fábrica · IIoT</p>
-  </div>
+    <div class="main-panel">
 
-  <!-- Tabs -->
-  <div class="tabs" id="tabHeaders">
-    <button class="tab-btn active" data-tab="tab1"><i class="fas fa-ethernet"></i> Cabos Industriais</button>
-    <button class="tab-btn" data-tab="tab2"><i class="fas fa-project-diagram"></i> Topologias</button>
-  </div>
-
-  <!-- Aba 1: Cabos -->
-  <div id="tab1" class="tab-content active">
-    <div class="cards-grid" id="cardContainer">
-      <!-- Card 1: Par Trançado -->
-      <div class="card" data-card="par-trancado">
-        <i class="fas fa-network-wired"></i>
-        <h3>Par Trançado</h3>
-        <div class="badge">Ethernet / PROFINET</div>
-        <div class="card-detail"><i class="fas fa-info-circle"></i> Clique para saber onde é usado</div>
-        <div class="explanation-box hidden-detail" id="exp-par-trancado">
-          <i class="fas fa-robot"></i>
-          <span><strong>Uso na fábrica:</strong> Conexão de CLPs, sensores inteligentes, IHM e drives. Muito comum em redes de célula e controle de máquinas, com bom custo-benefício e flexibilidade.</span>
+        <!-- HEADER -->
+        <div class="header">
+            <h1><i class="fas fa-microchip"></i> Guia Visual de Redes para Automação</h1>
+            <div class="header-badge">
+                <span class="led"></span>
+                <span>Industrial IoT · Chão de fábrica</span>
+            </div>
         </div>
-      </div>
 
-      <!-- Card 2: Fibra Óptica -->
-      <div class="card" data-card="fibra-optica">
-        <i class="fas fa-fiber-optic"></i>
-        <h3>Fibra Óptica</h3>
-        <div class="badge">Alta velocidade</div>
-        <div class="card-detail"><i class="fas fa-info-circle"></i> Clique para saber onde é usado</div>
-        <div class="explanation-box hidden-detail" id="exp-fibra-optica">
-          <i class="fas fa-tachometer-alt"></i>
-          <span><strong>Uso na fábrica:</strong> Backbone de rede, interligação de prédios, ambientes com alta interferência eletromagnética (fornos, solda) e comunicação entre switches principais.</span>
+        <div class="subhead">
+            <p><i class="fas fa-robot"></i> Clique nos cards para ver onde cada cabo é usado</p>
+            <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i> <span>Modo Claro</span></button>
         </div>
-      </div>
 
-      <!-- Card 3: Wireless -->
-      <div class="card" data-card="wireless">
-        <i class="fas fa-wifi"></i>
-        <h3>Wireless</h3>
-        <div class="badge">Wi-Fi / 5G</div>
-        <div class="card-detail"><i class="fas fa-info-circle"></i> Clique para saber onde é usado</div>
-        <div class="explanation-box hidden-detail" id="exp-wireless">
-          <i class="fas fa-mobile-alt"></i>
-          <span><strong>Uso na fábrica:</strong> AGVs (robôs móveis), tablets de operação, monitoramento remoto, sensores em áreas de difícil acesso e estações de coleta de dados.</span>
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="tab1"><i class="fas fa-ethernet"></i> Cabos Industriais</button>
+            <button class="tab-btn" data-tab="tab2"><i class="fas fa-project-diagram"></i> Topologias</button>
         </div>
-      </div>
+
+        <!-- ===== ABA 1: CABOS ===== -->
+        <div id="tab1" class="tab-content active">
+            <div class="cards-grid">
+
+                <!-- Par Trançado -->
+                <div class="card" data-card="par-trancado">
+                    <div class="icon-wrap"><i class="fas fa-network-wired"></i></div>
+                    <h3>Par Trançado</h3>
+                    <div class="badge">Ethernet / PROFINET</div>
+                    <div class="card-hint"><i class="fas fa-mouse-pointer"></i> Clique para detalhes</div>
+                    <div class="explanation-box hidden-detail" id="exp-par-trancado">
+                        <i class="fas fa-robot"></i>
+                        <div>
+                            <strong>Uso na fábrica:</strong> Conexão de CLPs, sensores inteligentes, IHMs e drives.
+                            <div class="exemplo"><i class="fas fa-check-circle"></i> Exemplo: célula robótica, esteiras de montagem</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fibra Óptica -->
+                <div class="card" data-card="fibra-optica">
+                    <div class="icon-wrap"><i class="fas fa-fiber-optic"></i></div>
+                    <h3>Fibra Óptica</h3>
+                    <div class="badge">Alta velocidade</div>
+                    <div class="card-hint"><i class="fas fa-mouse-pointer"></i> Clique para detalhes</div>
+                    <div class="explanation-box hidden-detail" id="exp-fibra-optica">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <div>
+                            <strong>Uso na fábrica:</strong> Backbone da rede, interligação de prédios, ambientes com alta interferência.
+                            <div class="exemplo"><i class="fas fa-check-circle"></i> Exemplo: fornos, solda a arco, subestações</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wireless -->
+                <div class="card" data-card="wireless">
+                    <div class="icon-wrap"><i class="fas fa-wifi"></i></div>
+                    <h3>Wireless</h3>
+                    <div class="badge">Wi-Fi / 5G</div>
+                    <div class="card-hint"><i class="fas fa-mouse-pointer"></i> Clique para detalhes</div>
+                    <div class="explanation-box hidden-detail" id="exp-wireless">
+                        <i class="fas fa-mobile-alt"></i>
+                        <div>
+                            <strong>Uso na fábrica:</strong> AGVs (robôs móveis), tablets de operação, sensores remotos.
+                            <div class="exemplo"><i class="fas fa-check-circle"></i> Exemplo: armazéns, monitoramento de tanques</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div style="margin-top: 1.2rem; color: #7a93b9; font-size: 0.9rem; display: flex; gap: 12px; flex-wrap: wrap;">
+                <span><i class="fas fa-circle" style="color:#4a9eff; font-size: 0.6rem;"></i> Clique em um card para ver a aplicação</span>
+                <span><i class="fas fa-circle" style="color:#4ade80; font-size: 0.6rem;"></i> Destaque azul = card selecionado</span>
+            </div>
+        </div>
+
+        <!-- ===== ABA 2: TOPOLOGIAS ===== -->
+        <div id="tab2" class="tab-content">
+            <div class="topo-buttons">
+                <button class="topo-btn active" data-topo="estrela"><i class="fas fa-star"></i> Layout em Estrela</button>
+                <button class="topo-btn" data-topo="barramento"><i class="fas fa-bars"></i> Layout em Barramento</button>
+            </div>
+
+            <div class="topo-panel" id="topoPanel">
+                <div id="topoContent"></div>
+            </div>
+        </div>
+
     </div>
-    <div style="margin-top: 1rem; font-size: 0.95rem; color: #3b5a7a; background: #e0ebfa; padding: 0.5rem 1.2rem; border-radius: 40px; display: inline-block;">
-      <i class="fas fa-arrow-circle-right"></i> Clique em um card para ver a aplicação na fábrica
-    </div>
-  </div>
 
-  <!-- Aba 2: Topologias -->
-  <div id="tab2" class="tab-content">
-    <div class="topo-buttons">
-      <button class="topo-btn active" data-topo="estrela"><i class="fas fa-star"></i> Layout em Estrela</button>
-      <button class="topo-btn" data-topo="barramento"><i class="fas fa-bars"></i> Layout em Barramento</button>
-    </div>
+    <script>
+        (function() {
+            // ===== TABS =====
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = {
+                tab1: document.getElementById('tab1'),
+                tab2: document.getElementById('tab2'),
+            };
 
-    <div class="topo-panel" id="topoPanel">
-      <!-- conteúdo dinâmico via js -->
-      <div id="topoContent"></div>
-    </div>
-  </div>
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tabId = this.dataset.tab;
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    Object.keys(tabContents).forEach(key => {
+                        tabContents[key].classList.toggle('active', key === tabId);
+                    });
+                });
+            });
 
-</div>
+            // ===== CARDS =====
+            const cards = document.querySelectorAll('.card');
+            const expMap = {
+                'par-trancado': document.getElementById('exp-par-trancado'),
+                'fibra-optica': document.getElementById('exp-fibra-optica'),
+                'wireless': document.getElementById('exp-wireless'),
+            };
 
-<script>
-  (function() {
-    // ---------- TABS ----------
-    const tabBtns = document.querySelectorAll('.tab-btn');
-    const tabContents = {
-      tab1: document.getElementById('tab1'),
-      tab2: document.getElementById('tab2'),
-    };
+            // Garantir que todas as explicações comecem ocultas
+            Object.values(expMap).forEach(el => el.classList.add('hidden-detail'));
 
-    tabBtns.forEach(btn => {
-      btn.addEventListener('click', function(e) {
-        const tabId = this.dataset.tab;
-        // remove active de todos
-        tabBtns.forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        // contents
-        Object.keys(tabContents).forEach(key => {
-          tabContents[key].classList.toggle('active', key === tabId);
-        });
-      });
-    });
+            cards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    const key = this.dataset.card;
+                    // Remove active de todos os cards
+                    cards.forEach(c => c.classList.remove('active-card'));
+                    this.classList.add('active-card');
 
-    // ---------- CARDS (explicação) ----------
-    const cards = document.querySelectorAll('.card');
-    const explanationBoxes = {
-      'par-trancado': document.getElementById('exp-par-trancado'),
-      'fibra-optica': document.getElementById('exp-fibra-optica'),
-      'wireless': document.getElementById('exp-wireless'),
-    };
+                    // Oculta todas as explicações
+                    Object.values(expMap).forEach(el => el.classList.add('hidden-detail'));
 
-    // esconder todas as explicações inicialmente
-    Object.values(explanationBoxes).forEach(el => el.classList.add('hidden-detail'));
+                    // Mostra a explicação correspondente
+                    const target = expMap[key];
+                    if (target) {
+                        target.classList.remove('hidden-detail');
+                    }
+                });
+            });
 
-    cards.forEach(card => {
-      card.addEventListener('click', function(e) {
-        const cardKey = this.dataset.card;
-        // remove active de todos os cards
-        cards.forEach(c => c.classList.remove('active-card'));
-        this.classList.add('active-card');
+            // ===== TOPOLOGIAS =====
+            const topoData = {
+                estrela: {
+                    titulo: 'Layout em Estrela',
+                    icone: 'fa-star',
+                    desc: 'Todos os dispositivos se conectam a um switch central. É o padrão mais usado em fábricas modernas.',
+                    vantagens: [
+                        'Manutenção simplificada: falha em um dispositivo não afeta os outros.',
+                        'Alta flexibilidade para expansão (basta conectar no switch).',
+                        'Diagnóstico rápido: cada link é monitorado individualmente.',
+                        'Suporte a VLANs e QoS para tráfego crítico.'
+                    ],
+                    desvantagens: [
+                        'Ponto único de falha: se o switch central falha, toda a rede para.',
+                        'Custo maior com switch central e cabeamento dedicado.',
+                        'Requer infraestrutura organizada (racks, patch panels).'
+                    ]
+                },
+                barramento: {
+                    titulo: 'Layout em Barramento',
+                    icone: 'fa-bars',
+                    desc: 'Todos os dispositivos compartilham um único cabo (backbone) com terminações. Comum em redes legadas.',
+                    vantagens: [
+                        'Menor custo de cabo e infraestrutura (um único backbone).',
+                        'Simples de implementar em linhas de produção lineares.',
+                        'Menos equipamentos ativos (repetidores ou hubs).'
+                    ],
+                    desvantagens: [
+                        'Falha no cabo principal interrompe toda a comunicação.',
+                        'Difícil isolar falhas (toda rede é afetada).',
+                        'Desempenho degrada com muitos dispositivos (colisões).',
+                        'Menor segurança e limitação de distância.'
+                    ]
+                }
+            };
 
-        // esconde todas as explicações
-        Object.values(explanationBoxes).forEach(el => el.classList.add('hidden-detail'));
-        // mostra a explicação correspondente
-        const target = explanationBoxes[cardKey];
-        if (target) {
-          target.classList.remove('hidden-detail');
-          target.classList.add('visible');
-        }
-      });
-    });
+            function renderTopo(key) {
+                const data = topoData[key];
+                if (!data) return;
+                const container = document.getElementById('topoContent');
+                container.innerHTML = `
+                    <h3><i class="fas ${data.icone}"></i> ${data.titulo}</h3>
+                    <div class="topo-desc"><i class="fas fa-info-circle"></i> ${data.desc}</div>
+                    <div class="topo-grid">
+                        <div class="topo-col vantagens">
+                            <h4><i class="fas fa-check-circle" style="color:#4ade80;"></i> Vantagens</h4>
+                            <ul>
+                                ${data.vantagens.map(item => `<li><i class="fas fa-plus-circle"></i> ${item}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <div class="topo-col desvantagens">
+                            <h4><i class="fas fa-exclamation-triangle" style="color:#f87171;"></i> Desvantagens</h4>
+                            <ul>
+                                ${data.desvantagens.map(item => `<li><i class="fas fa-minus-circle"></i> ${item}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="topo-footer">
+                        <i class="fas fa-microchip"></i> Aplicação no chão de fábrica: 
+                        ${key === 'estrela' ? 'Células de manufatura, CLPs distribuídos, redes de segurança.' : 'Sistemas legados, esteiras longas, redes com poucos nós.'}
+                    </div>
+                `;
+            }
 
-    // ---------- TOPOLOGIAS ----------
-    const topoData = {
-      estrela: {
-        titulo: 'Layout em Estrela',
-        icone: 'fa-star',
-        desc: 'Todos os dispositivos se conectam a um switch central (hub/switch). Ideal para redes industriais modernas.',
-        vantagens: [
-          'Facilidade de manutenção: falha em um dispositivo não afeta os demais.',
-          'Alta flexibilidade para adicionar ou remover equipamentos.',
-          'Diagnóstico simplificado: cada link é independente.',
-          'Desempenho estável com switches gerenciáveis (QoS, VLAN).'
-        ],
-        desvantagens: [
-          'Ponto único de falha: se o switch central falha, toda a rede para.',
-          'Custo maior com switch central e cabeamento dedicado.',
-          'Requer mais espaço para infraestrutura de cabeamento.'
-        ]
-      },
-      barramento: {
-        titulo: 'Layout em Barramento',
-        icone: 'fa-bars',
-        desc: 'Todos os dispositivos compartilham um único cabo (backbone) com terminações. Comum em redes mais antigas ou campos com poucos nós.',
-        vantagens: [
-          'Menor custo de cabo e infraestrutura (um único backbone).',
-          'Simples de implementar em redes lineares (ex: esteiras longas).',
-          'Menos equipamentos ativos (repetidores ou hubs).'
-        ],
-        desvantagens: [
-          'Falha no cabo principal interrompe toda a comunicação.',
-          'Dificuldade de isolar falhas (toda rede é afetada).',
-          'Desempenho degrada com muitos dispositivos (colisões).',
-          'Menor segurança e limitação de distância.'
-        ]
-      }
-    };
+            // Botões de topologia
+            const topoBtns = document.querySelectorAll('.topo-btn');
+            topoBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    topoBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    renderTopo(this.dataset.topologia);
+                });
+            });
 
-    function renderTopo(topoKey) {
-      const data = topoData[topoKey];
-      if (!data) return;
-      const container = document.getElementById('topoContent');
-      container.innerHTML = `
-        <h3><i class="fas ${data.icone}"></i> ${data.titulo}</h3>
-        <div class="topo-desc"><i class="fas fa-info-circle"></i> ${data.desc}</div>
-        <div class="topo-grid">
-          <div class="topo-col vantagens">
-            <h4><i class="fas fa-check-circle" style="color:#1f9e5e;"></i> Vantagens</h4>
-            <ul>
-              ${data.vantagens.map(item => `<li><i class="fas fa-plus-circle"></i> ${item}</li>`).join('')}
-            </ul>
-          </div>
-          <div class="topo-col desvantagens">
-            <h4><i class="fas fa-exclamation-triangle" style="color:#c94a4a;"></i> Desvantagens</h4>
-            <ul>
-              ${data.desvantagens.map(item => `<li><i class="fas fa-minus-circle"></i> ${item}</li>`).join('')}
-            </ul>
-          </div>
-        </div>
-        <div style="margin-top: 1.5rem; font-size: 0.9rem; background: #e4ecfa; padding: 0.6rem 1.2rem; border-radius: 60px; color: #1f3a5e; display:inline-block;">
-          <i class="fas fa-microchip"></i> Aplicação no chão de fábrica
-        </div>
-      `;
-    }
+            // Inicializa com Estrela
+            renderTopo('estrela');
 
-    // botões topo
-    const topoBtns = document.querySelectorAll('.topo-btn');
-    topoBtns.forEach(btn => {
-      btn.addEventListener('click', function() {
-        topoBtns.forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        const topoKey = this.dataset.topo;
-        renderTopo(topoKey);
-      });
-    });
-
-    // inicializa com estrela
-    renderTopo('estrela');
-
-    // pequeno ajuste: ao clicar em um card, se a aba estiver ativa, manter comportamento
-    // mas já funciona.
-  })();
-</script>
-</body>
-</html>
+            // ===== TEMA CLARO/ESCURO =====
+            const themeToggle
