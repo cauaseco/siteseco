@@ -1,1052 +1,506 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>🏭 Fábrica 4.0 - Centro de Controle de Redes</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <style>
-        /* ===== RESET ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-        }
-
-        /* ===== PARTÍCULAS (CANVAS) ===== */
-        #particles-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        body {
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem 1rem;
-            background: #0b0f1a;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        /* ===== PAINEL PRINCIPAL ===== */
-        .main-panel {
-            max-width: 1400px;
-            width: 100%;
-            background: rgba(18, 28, 46, 0.82);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 56px;
-            padding: 2.2rem 2.8rem;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.9), inset 0 0 0 1px rgba(255, 255, 255, 0.03);
-            position: relative;
-            z-index: 1;
-            transition: 0.4s;
-        }
-
-        /* ===== HEADER ===== */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 0.5rem;
-            position: relative;
-            z-index: 2;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #f0f4ff;
-            letter-spacing: -0.5px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .header h1 i {
-            color: #4a9eff;
-            font-size: 2.8rem;
-            filter: drop-shadow(0 0 20px rgba(74, 158, 255, 0.3));
-            animation: pulse-glow 2s infinite;
-        }
-
-        @keyframes pulse-glow {
-            0%,
-            100% {
-                filter: drop-shadow(0 0 20px rgba(74, 158, 255, 0.3));
-            }
-            50% {
-                filter: drop-shadow(0 0 40px rgba(74, 158, 255, 0.6));
-            }
-        }
-
-        .header-stats {
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .stat-item {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 0.3rem 1.2rem;
-            border-radius: 40px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #9bc1ff;
-            font-size: 0.9rem;
-        }
-
-        .stat-item .num {
-            font-weight: 700;
-            color: #fff;
-            font-size: 1.1rem;
-        }
-
-        .header-badge {
-            background: rgba(74, 158, 255, 0.12);
-            border: 1px solid rgba(74, 158, 255, 0.2);
-            padding: 0.4rem 1.6rem;
-            border-radius: 60px;
-            color: #9bc1ff;
-            font-weight: 500;
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            backdrop-filter: blur(4px);
-        }
-
-        .header-badge .led {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #4ade80;
-            box-shadow: 0 0 12px #4ade80;
-            animation: pisca 1.8s infinite;
-        }
-
-        @keyframes pisca {
-            0%,
-            100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.2;
-            }
-        }
-
-        .subhead {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            padding-bottom: 0.8rem;
-            margin-bottom: 2rem;
-            position: relative;
-            z-index: 2;
-        }
-
-        .subhead p {
-            color: #8aa3c9;
-            font-weight: 400;
-            font-size: 1rem;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 0.3rem 1.4rem;
-            border-radius: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .subhead-actions {
-            display: flex;
-            gap: 0.8rem;
-            flex-wrap: wrap;
-        }
-
-        .theme-toggle,
-        .export-btn {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: #c0d4f0;
-            padding: 0.4rem 1.2rem;
-            border-radius: 40px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .theme-toggle:hover,
-        .export-btn:hover {
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .export-btn {
-            background: rgba(74, 158, 255, 0.1);
-            border-color: rgba(74, 158, 255, 0.2);
-        }
-
-        .export-btn:hover {
-            background: rgba(74, 158, 255, 0.2);
-        }
-
-        /* ===== TABS ===== */
-        .tabs {
-            display: flex;
-            gap: 0.3rem;
-            margin-bottom: 2.2rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding-bottom: 0.1rem;
-            position: relative;
-            z-index: 2;
-            flex-wrap: wrap;
-        }
-
-        .tab-btn {
-            background: transparent;
-            border: none;
-            padding: 0.8rem 2.2rem;
-            font-size: 1.05rem;
-            font-weight: 600;
-            color: #7a93b9;
-            border-radius: 40px 40px 0 0;
-            cursor: pointer;
-            transition: 0.25s;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            position: relative;
-        }
-
-        .tab-btn i {
-            font-size: 1.2rem;
-        }
-
-        .tab-btn:hover {
-            color: #d0e2ff;
-            background: rgba(255, 255, 255, 0.03);
-        }
-
-        .tab-btn.active {
-            color: #ffffff;
-            background: rgba(74, 158, 255, 0.08);
-            box-shadow: inset 0 -2px 0 #4a9eff;
-        }
-
-        .tab-btn.active i {
-            color: #4a9eff;
-        }
-
-        .tab-content {
-            display: none;
-            animation: fadeUp 0.35s ease;
-            position: relative;
-            z-index: 2;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        @keyframes fadeUp {
-            0% {
-                opacity: 0.3;
-                transform: translateY(12px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* ===== CARDS (Cabos) ===== */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin: 1.2rem 0 0.8rem;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(6px);
-            border-radius: 32px;
-            padding: 2rem 1.5rem 1.8rem;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow: 0 12px 28px -12px rgba(0, 0, 0, 0.4);
-            transition: 0.3s ease;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #4a9eff, transparent);
-            opacity: 0;
-            transition: 0.3s;
-        }
-
-        .card:hover::before {
-            opacity: 1;
-        }
-
-        .card:hover {
-            transform: translateY(-6px) scale(1.01);
-            border-color: rgba(74, 158, 255, 0.25);
-            box-shadow: 0 24px 48px -16px rgba(0, 0, 0, 0.6);
-            background: rgba(255, 255, 255, 0.06);
-        }
-
-        .card .icon-wrap {
-            font-size: 3.2rem;
-            color: #4a9eff;
-            background: rgba(74, 158, 255, 0.08);
-            padding: 18px;
-            border-radius: 60px;
-            width: 90px;
-            height: 90px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 0.8rem;
-            transition: 0.3s;
-            border: 1px solid rgba(74, 158, 255, 0.1);
-            position: relative;
-        }
-
-        .card .icon-wrap .status-led {
-            position: absolute;
-            bottom: 4px;
-            right: 4px;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: #4ade80;
-            box-shadow: 0 0 12px #4ade80;
-            animation: pisca 1.5s infinite;
-            border: 2px solid rgba(0, 0, 0, 0.3);
-        }
-
-        .card:hover .icon-wrap {
-            background: rgba(74, 158, 255, 0.15);
-            box-shadow: 0 0 30px rgba(74, 158, 255, 0.1);
-        }
-
-        .card h3 {
-            font-size: 1.7rem;
-            font-weight: 600;
-            color: #eef4ff;
-            margin-bottom: 0.2rem;
-        }
-
-        .card .badge {
-            background: rgba(74, 158, 255, 0.12);
-            color: #8bb9ff;
-            font-weight: 500;
-            padding: 0.15rem 1.2rem;
-            border-radius: 30px;
-            font-size: 0.75rem;
-            border: 1px solid rgba(74, 158, 255, 0.1);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .card .speed-bar {
-            width: 100%;
-            margin-top: 0.8rem;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            height: 6px;
-            overflow: hidden;
-        }
-
-        .card .speed-bar .fill {
-            height: 100%;
-            border-radius: 20px;
-            background: linear-gradient(90deg, #4a9eff, #7c3aed);
-            transition: width 1s ease;
-            width: 0%;
-        }
-
-        .card .speed-label {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            font-size: 0.7rem;
-            color: #7a93b9;
-            margin-top: 4px;
-        }
-
-        .card .card-hint {
-            margin-top: 0.8rem;
-            color: #7a93b9;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255, 255, 255, 0.02);
-            padding: 0.4rem 1.2rem;
-            border-radius: 60px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-        }
-
-        .card.active-card {
-            border-color: #4a9eff;
-            background: rgba(74, 158, 255, 0.06);
-            box-shadow: 0 0 40px rgba(74, 158, 255, 0.05);
-        }
-
-        /* ===== EXPLICAÇÃO DOS CABOS ===== */
-        .explanation-box {
-            margin-top: 1.8rem;
-            background: rgba(74, 158, 255, 0.04);
-            border-radius: 24px;
-            padding: 1.2rem 2rem;
-            border-left: 5px solid #4a9eff;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
-            color: #d0e2ff;
-            font-size: 1.05rem;
-            display: flex;
-            align-items: flex-start;
-            gap: 16px;
-            flex-wrap: wrap;
-            transition: 0.3s;
-        }
-
-        .explanation-box i {
-            font-size: 1.8rem;
-            color: #4a9eff;
-            background: rgba(74, 158, 255, 0.08);
-            padding: 10px 14px;
-            border-radius: 50%;
-            margin-top: 2px;
-        }
-
-        .explanation-box strong {
-            color: #ffffff;
-        }
-
-        .explanation-box .exemplo {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.04);
-            padding: 0.2rem 1rem;
-            border-radius: 30px;
-            font-size: 0.85rem;
-            color: #8bb9ff;
-            margin-top: 4px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-        }
-
-        .hidden-detail {
-            display: none !important;
-        }
-
-        /* ===== TOPOLOGIAS ===== */
-        .topo-buttons {
-            display: flex;
-            gap: 1.2rem;
-            flex-wrap: wrap;
-            margin: 0.5rem 0 2rem;
-        }
-
-        .topo-btn {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 0.7rem 2.2rem;
-            border-radius: 60px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            color: #9bb3d6;
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            backdrop-filter: blur(4px);
-        }
-
-        .topo-btn i {
-            font-size: 1.2rem;
-            color: #4a9eff;
-        }
-
-        .topo-btn:hover {
-            background: rgba(255, 255, 255, 0.07);
-            border-color: rgba(74, 158, 255, 0.2);
-        }
-
-        .topo-btn.active {
-            background: rgba(74, 158, 255, 0.12);
-            border-color: #4a9eff;
-            color: #ffffff;
-            box-shadow: 0 0 24px rgba(74, 158, 255, 0.05);
-        }
-
-        .topo-btn.active i {
-            color: #ffffff;
-        }
-
-        .topo-panel {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 32px;
-            padding: 2rem 2.2rem 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(4px);
-            min-height: 320px;
-        }
-
-        .topo-panel h3 {
-            font-size: 1.9rem;
-            font-weight: 600;
-            color: #eef4ff;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 0.4rem;
-        }
-
-        .topo-panel h3 i {
-            color: #4a9eff;
-        }
-
-        .topo-desc {
-            font-size: 1.05rem;
-            color: #b0c8e8;
-            background: rgba(74, 158, 255, 0.04);
-            padding: 0.5rem 1.6rem;
-            border-radius: 40px;
-            display: inline-block;
-            margin: 0.3rem 0 1.4rem;
-            border: 1px solid rgba(74, 158, 255, 0.04);
-        }
-
-        /* ===== DIAGRAMA SVG ===== */
-        .topo-diagram {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 20px;
-            padding: 1rem;
-            margin: 1rem 0 1.5rem;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-        }
-
-        .topo-diagram svg {
-            max-width: 100%;
-            height: auto;
-        }
-
-        .topo-diagram .device {
-            transition: 0.3s;
-            cursor: pointer;
-        }
-
-        .topo-diagram .device:hover {
-            filter: brightness(1.3);
-        }
-
-        .topo-diagram .device.failed {
-            fill: #f87171 !important;
-            stroke: #ef4444 !important;
-        }
-
-        .topo-diagram .link {
-            transition: 0.3s;
-        }
-
-        .topo-diagram .link.failed {
-            stroke: #f87171 !important;
-            stroke-dasharray: 8 4;
-            animation: dash 0.5s linear infinite;
-        }
-
-        @keyframes dash {
-            to {
-                stroke-dashoffset: -12;
-            }
-        }
-
-        .topo-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-top: 0.8rem;
-        }
-
-        .topo-col {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 24px;
-            padding: 1.2rem 1.6rem 1.6rem;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-        }
-
-        .topo-col h4 {
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #d0e2ff;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding-bottom: 0.5rem;
-            margin-bottom: 0.8rem;
-        }
-
-        .topo-col ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .topo-col li {
-            padding: 0.5rem 0;
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            color: #b8ceec;
-            font-size: 0.98rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
-        }
-
-        .topo-col li i {
-            width: 20px;
-            margin-top: 0.2rem;
-            font-size: 0.9rem;
-        }
-
-        .topo-col.vantagens li i {
-            color: #4ade80;
-        }
-        .topo-col.desvantagens li i {
-            color: #f87171;
-        }
-
-        .topo-footer {
-            margin-top: 1.6rem;
-            font-size: 0.9rem;
-            background: rgba(74, 158, 255, 0.03);
-            padding: 0.5rem 1.4rem;
-            border-radius: 60px;
-            color: #8aa3c9;
-            display: inline-block;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-        }
-
-        .topo-metrics {
-            display: flex;
-            gap: 2rem;
-            margin-top: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .metric-box {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 16px;
-            padding: 0.8rem 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            flex: 1;
-            min-width: 120px;
-            text-align: center;
-        }
-
-        .metric-box .label {
-            font-size: 0.8rem;
-            color: #7a93b9;
-        }
-
-        .metric-box .value {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #eef4ff;
-        }
-
-        .metric-box .value.good {
-            color: #4ade80;
-        }
-        .metric-box .value.warning {
-            color: #fbbf24;
-        }
-        .metric-box .value.danger {
-            color: #f87171;
-        }
-
-        /* ===== SIMULADOR ===== */
-        .simulator-controls {
-            display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-            align-items: center;
-            margin: 1rem 0 1.5rem;
-            background: rgba(255, 255, 255, 0.02);
-            padding: 1rem 1.5rem;
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-        }
-
-        .simulator-controls label {
-            color: #b0c8e8;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .simulator-controls input[type="range"] {
-            width: 160px;
-            height: 4px;
-            -webkit-appearance: none;
-            background: linear-gradient(90deg, #4a9eff, #7c3aed);
-            border-radius: 10px;
-            outline: none;
-        }
-
-        .simulator-controls input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: #4a9eff;
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(74, 158, 255, 0.3);
-        }
-
-        .sim-btn {
-            background: rgba(74, 158, 255, 0.15);
-            border: 1px solid rgba(74, 158, 255, 0.2);
-            color: #fff;
-            padding: 0.5rem 1.8rem;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .sim-btn:hover {
-            background: rgba(74, 158, 255, 0.25);
-        }
-
-        .sim-btn.running {
-            background: rgba(239, 68, 68, 0.15);
-            border-color: rgba(239, 68, 68, 0.2);
-        }
-
-        .chart-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1.5rem;
-            margin: 1.5rem 0;
-        }
-
-        .chart-box {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 20px;
-            padding: 1.2rem;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-        }
-
-        .chart-box .chart-label {
-            color: #8aa3c9;
-            font-size: 0.85rem;
-            margin-bottom: 0.5rem;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .chart-box .chart-bar {
-            height: 24px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .chart-box .chart-bar .fill {
-            height: 100%;
-            border-radius: 20px;
-            transition: width 0.3s ease;
-            width: 0%;
-        }
-
-        .chart-box .chart-bar .fill.collision {
-            background: linear-gradient(90deg, #fbbf24, #f87171);
-        }
-        .chart-box .chart-bar .fill.latency {
-            background: linear-gradient(90deg, #4a9eff, #8b5cf6);
-        }
-        .chart-box .chart-bar .fill.throughput {
-            background: linear-gradient(90deg, #4ade80, #22d3ee);
-        }
-
-        .alert-box {
-            margin-top: 1rem;
-            padding: 0.8rem 1.2rem;
-            border-radius: 16px;
-            display: none;
-            align-items: center;
-            gap: 12px;
-            font-weight: 500;
-        }
-
-        .alert-box.show {
-            display: flex;
-        }
-
-        .alert-box.warning {
-            background: rgba(251, 191, 36, 0.1);
-            border: 1px solid rgba(251, 191, 36, 0.2);
-            color: #fbbf24;
-        }
-
-        .alert-box.danger {
-            background: rgba(248, 113, 113, 0.1);
-            border: 1px solid rgba(248, 113, 113, 0.2);
-            color: #f87171;
-        }
-
-        /* ===== RESPONSIVO ===== */
-        @media (max-width: 780px) {
-            .main-panel {
-                padding: 1.5rem;
-            }
-            .header h1 {
-                font-size: 1.8rem;
-            }
-            .tab-btn {
-                padding: 0.6rem 1.2rem;
-                font-size: 0.95rem;
-            }
-            .topo-grid {
-                grid-template-columns: 1fr;
-            }
-            .topo-panel {
-                padding: 1.5rem;
-            }
-            .simulator-controls {
-                flex-direction: column;
-                align-items: stretch;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .header h1 {
-                font-size: 1.4rem;
-                flex-wrap: wrap;
-            }
-            .header-badge {
-                font-size: 0.8rem;
-                padding: 0.2rem 1rem;
-            }
-            .card .icon-wrap {
-                width: 70px;
-                height: 70px;
-                font-size: 2.4rem;
-            }
-            .stat-item {
-                font-size: 0.75rem;
-                padding: 0.2rem 0.8rem;
-            }
-        }
-
-        /* ===== TEMA CLARO ===== */
-        body.light {
-            background: #eef3fc;
-        }
-
-        body.light .main-panel {
-            background: rgba(255, 255, 255, 0.78);
-            backdrop-filter: blur(20px);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        body.light .header h1 {
-            color: #0b1a33;
-        }
-
-        body.light .header-badge {
-            color: #1f4e9e;
-            background: rgba(74, 158, 255, 0.08);
-            border-color: rgba(74, 158, 255, 0.15);
-        }
-
-        body.light .subhead p {
-            color: #2c4a6a;
-            background: rgba(0, 0, 0, 0.02);
-        }
-
-        body.light .tab-btn {
-            color: #3b5a7a;
-        }
-        body.light .tab-btn:hover {
-            color: #0b1a33;
-        }
-        body.light .tab-btn.active {
-            color: #0b1a33;
-            background: rgba(74, 158, 255, 0.06);
-        }
-
-        body.light .card {
-            background: rgba(255, 255, 255, 0.5);
-            border-color: rgba(0, 0, 0, 0.04);
-        }
-        body.light .card:hover {
-            background: rgba(255, 255, 255, 0.8);
-            border-color: rgba(74, 158, 255, 0.3);
-        }
-        body.light .card h3 {
-            color: #0b1a33;
-        }
-        body.light .card .badge {
-            color: #1f4e9e;
-            background: rgba(74, 158, 255, 0.06);
-        }
-        body.light .card .card-hint {
-            color: #3b5a7a;
-        }
-        body.light .card .icon-wrap {
-            background: rgba(74, 158, 255, 0.06);
-        }
-        body.light .card.active-card {
-            background: rgba(74, 158, 255, 0.06);
-        }
-
-        body.light .explanation-box {
-            background: rgba(74, 158, 255, 0.04);
-            color: #1a2d47;
-        }
-        body.light .explanation-box strong {
-            color: #0b1a33;
-        }
-        body.light .explanation-box .exemplo {
-            color: #1f4e9e;
-        }
-
-        body.light .topo-btn {
-            color: #1f3a5e;
-            background: rgba(255, 255, 255, 0.4);
-        }
-        body.light .topo-btn.active {
-            background: #0b1a33;
-            color: white;
-            border-color: #0b1a33;
-        }
-        body.light .topo-btn.active i {
-            color: white;
-        }
-
-        body.light .topo-panel {
-            background: rgba(255, 255, 255, 0.4);
-        }
-        body.light .topo-panel h3 {
-            color: #0b1a33;
-        }
-        body.light .topo-desc {
-            color: #1f3a5e;
-            background: rgba(0, 0, 0, 0.02);
-        }
-        body.light .topo-col {
-            background: rgba(255, 255, 255, 0.3);
-        }
-        body.light .topo-col h4 {
-            color: #0b1a33;
-        }
-        body.light .topo-col li {
-            color: #1f3a5e;
-        }
-
-        body.light .theme-toggle,
-        body.light .export-btn {
-            color: #1f3a5e;
-            border-color: rgba(0, 0, 0, 0.06);
-        }
-        body.light .theme-toggle:hover {
-            background: rgba(0, 0, 0, 0.03);
-        }
-        body.light .topo-footer {
-            color: #2c4a6a;
-        }
-        body.light .header-badge .led {
-            background: #22c55e;
-        }
-        body.light .stat-item {
-            color: #1f3a5e;
-            border-color: rgba(0, 0, 0, 0.04);
-        }
-        body.light .stat-item .num {
-            color: #0b1a33;
-        }
-        body.light .chart-box {
-            background: rgba(0, 0, 0, 0.02);
-        }
-        body.light .simulator-controls {
-            background: rgba(0, 0, 0, 0.02);
-        }
-        body.light .sim-btn {
-            color: #0b1a33;
-        }
-        body.light .topo-diagram {
-            background: rgba(0, 0, 0, 0.03);
-        }
-        body.light .metric-box {
-            background: rgba(0, 0, 0, 0.02);
-        }
-        body.light .metric-box .value {
-            color: #0b1a33;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guia Visual de Redes para Automação</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+      background: #f4f7fb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      background: white;
+      border-radius: 2rem;
+      box-shadow: 0 20px 40px rgba(0, 20, 40, 0.15);
+      padding: 2rem 2rem 2.5rem;
+      transition: all 0.2s;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: #0b2b44;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+    }
+
+    h1 small {
+      font-size: 1rem;
+      font-weight: 400;
+      color: #3a6a8e;
+      margin-left: 0.75rem;
+      background: #e9f0f7;
+      padding: 0.15rem 1rem;
+      border-radius: 30px;
+    }
+
+    .subhead {
+      color: #2c5779;
+      border-left: 4px solid #4f9bc2;
+      padding-left: 1rem;
+      margin-bottom: 2rem;
+      font-weight: 400;
+      font-size: 1rem;
+    }
+
+    /* Abas */
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 2px solid #dce6ef;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 0.7rem 1.8rem;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #3d6180;
+      border-radius: 40px 40px 0 0;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-bottom: -2px;
+      border-bottom: 3px solid transparent;
+    }
+
+    .tab-btn:hover {
+      background: #e7eef6;
+      color: #0b2b44;
+    }
+
+    .tab-btn.active {
+      color: #005a8c;
+      border-bottom-color: #005a8c;
+      background: #e3eef9;
+      font-weight: 600;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fade 0.25s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fade {
+      0% { opacity: 0.4; transform: translateY(4px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.8rem;
+      margin: 1.5rem 0 1rem;
+    }
+
+    .card {
+      background: #f9fcff;
+      border-radius: 24px;
+      padding: 1.6rem 1.2rem 1.8rem;
+      box-shadow: 0 6px 14px rgba(0, 30, 50, 0.06);
+      border: 1px solid #e2edf7;
+      transition: 0.2s;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 28px rgba(0, 40, 70, 0.08);
+      border-color: #b3d1e8;
+    }
+
+    .card h3 {
+      font-size: 1.3rem;
+      color: #103a56;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.3px;
+    }
+
+    .card .icon {
+      font-size: 2.8rem;
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+
+    .card .badge {
+      background: #d7e5f2;
+      color: #004070;
+      border-radius: 50px;
+      padding: 0.2rem 1rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      display: inline-block;
+      margin-top: 0.2rem;
+    }
+
+    .card-detail {
+      background: #eef6fd;
+      border-radius: 18px;
+      padding: 1.2rem 1.5rem;
+      margin: 1.8rem 0 1.2rem;
+      border-left: 6px solid #2b7aa2;
+      color: #0a2a40;
+      display: none;
+    }
+
+    .card-detail.show {
+      display: block;
+    }
+
+    .card-detail p {
+      margin-bottom: 0.2rem;
+      font-weight: 450;
+    }
+
+    .card-detail strong {
+      color: #004070;
+    }
+
+    /* Topologias */
+    .topo-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 0.5rem 0 1.8rem;
+    }
+
+    .topo-btn {
+      background: white;
+      border: 2px solid #c2d9ea;
+      padding: 0.9rem 2.2rem;
+      border-radius: 60px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #1c4a6b;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.02);
+      flex: 1 0 auto;
+    }
+
+    .topo-btn:hover {
+      background: #e2effa;
+      border-color: #6a9ec2;
+    }
+
+    .topo-btn.active {
+      background: #1d5d83;
+      border-color: #1d5d83;
+      color: white;
+      box-shadow: 0 8px 18px rgba(0, 70, 120, 0.15);
+    }
+
+    .topo-info {
+      background: #f4faff;
+      border-radius: 24px;
+      padding: 1.8rem 2rem;
+      margin-top: 0.8rem;
+      border: 1px solid #dfecf5;
+    }
+
+    .topo-info h3 {
+      color: #0b3857;
+      font-size: 1.6rem;
+      font-weight: 500;
+      margin-bottom: 0.3rem;
+    }
+
+    .topo-info .desc {
+      font-size: 1.05rem;
+      color: #1d4461;
+      margin-bottom: 1.2rem;
+      border-left: 3px solid #579ac2;
+      padding-left: 1rem;
+    }
+
+    .vantagens, .desvantagens {
+      background: white;
+      border-radius: 18px;
+      padding: 1rem 1.8rem;
+      margin: 1rem 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+
+    .vantagens h4, .desvantagens h4 {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: #003057;
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .vantagens ul, .desvantagens ul {
+      list-style: none;
+      padding-left: 0.2rem;
+    }
+
+    .vantagens li::before {
+      content: "✅ ";
+      color: #1f8b4c;
+      font-weight: 600;
+      margin-right: 0.3rem;
+    }
+
+    .desvantagens li::before {
+      content: "⚠️ ";
+      color: #b1623a;
+      font-weight: 600;
+      margin-right: 0.3rem;
+    }
+
+    .vantagens li, .desvantagens li {
+      padding: 0.25rem 0;
+      border-bottom: 1px solid #edf3f9;
+    }
+
+    .vantagens li:last-child, .desvantagens li:last-child {
+      border-bottom: none;
+    }
+
+    .footnote {
+      font-size: 0.9rem;
+      color: #527b99;
+      margin-top: 1.5rem;
+      text-align: right;
+      border-top: 1px solid #dce6ef;
+      padding-top: 1.2rem;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 1.5rem; }
+      h1 { font-size: 1.8rem; flex-wrap: wrap; }
+      .tab-btn { padding: 0.5rem 1.2rem; font-size: 1rem; }
+      .topo-info { padding: 1.2rem; }
+    }
+  </style>
 </head>
 <body>
+<div class="container">
+  <header>
+    <h1>
+      ⚙️ Guia Visual de Redes para Automação
+      <small>chão de fábrica</small>
+    </h1>
+    <div class="subhead">Cabos industriais, topologias e aplicações diretas</div>
+  </header>
 
-    <!-- ===== CANVAS DE PARTÍCULAS ===== -->
-    <canvas id="particles-canvas"></canvas>
+  <!-- Abas -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="tab1">📡 Cabos Industriais</button>
+    <button class="tab-btn" data-tab="tab2">🔗 Topologias</button>
+  </div>
 
-    <div class="main-panel">
+  <!-- ABA 1: Cabos -->
+  <div id="tab1" class="tab-content active">
+    <div class="card-grid">
+      <!-- Card 1: Par Trançado -->
+      <div class="card" data-detail="detail-par">
+        <span class="icon">🔄</span>
+        <h3>Par Trançado</h3>
+        <span class="badge">Ethernet/IP • Profinet</span>
+        <p style="margin-top: 0.6rem; font-size: 0.9rem; color: #2e577b;">Clique para aplicação</p>
+      </div>
+      <!-- Card 2: Fibra Óptica -->
+      <div class="card" data-detail="detail-fibra">
+        <span class="icon">💡</span>
+        <h3>Fibra Óptica</h3>
+        <span class="badge">Longa distância • Alta velocidade</span>
+        <p style="margin-top: 0.6rem; font-size: 0.9rem; color: #2e577b;">Clique para aplicação</p>
+      </div>
+      <!-- Card 3: Wireless -->
+      <div class="card" data-detail="detail-wireless">
+        <span class="icon">📶</span>
+        <h3>Wireless</h3>
+        <span class="badge">Wi-Fi • 5G • IoT</span>
+        <p style="margin-top: 0.6rem; font-size: 0.9rem; color: #2e577b;">Clique para aplicação</p>
+      </div>
+    </div>
 
-        <!-- HEADER -->
-        <div class="header">
-            <h1><i class="fas fa-microchip"></i> Fábrica 4.0</h1>
-            <div class="header-stats">
-                <div class="stat-item">
-                    <i class="fas fa-plug"></i>
-                    <span class="num" id="deviceCount">0</span>
-                    <span>dispositivos</span>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-signal"></i>
-                    <span id="networkHealth">100%</span>
-                    <span>saúde</span>
-                </div>
-                <div class="header-badge">
-                    <span class="led"></span>
-                    <span>Industrial IoT</span>
-                </div>
-            </div>
-        </div>
+    <!-- Detalhes dos cards (inicialmente ocultos) -->
+    <div id="detail-par" class="card-detail">
+      <p><strong>📍 Onde usar na fábrica:</strong> Ideal para comunicação entre CLPs, IHM, e drives em curtas distâncias (até 100 m). Muito usado em células de manufatura, esteiras e painéis de controle.</p>
+      <p style="font-size: 0.9rem; margin-top: 0.3rem; color: #1e4e6e;">⚡ Exemplo: rede Profinet em uma linha de montagem.</p>
+    </div>
+    <div id="detail-fibra" class="card-detail">
+      <p><strong>📍 Onde usar na fábrica:</strong> Conexões entre edifícios, áreas com alto ruído eletromagnético e distâncias superiores a 100 m. Ideal para backbones e interligação de subestações.</p>
+      <p style="font-size: 0.9rem; margin-top: 0.3rem; color: #1e4e6e;">⚡ Exemplo: interligação do almoxarifado ao data center da fábrica.</p>
+    </div>
+    <div id="detail-wireless" class="card-detail">
+      <p><strong>📍 Onde usar na fábrica:</strong> Equipamentos móveis (AGVs, robôs móveis), sensores em locais de difícil acesso e comunicação com dispositivos IoT em áreas extensas.</p>
+      <p style="font-size: 0.9rem; margin-top: 0.3rem; color: #1e4e6e;">⚡ Exemplo: monitoramento de temperatura em tanques via Wi-Fi industrial.</p>
+    </div>
+  </div>
 
-        <div class="subhead">
-            <p><i class="fas fa-robot"></i> Centro de Controle de Redes Industriais</p
+  <!-- ABA 2: Topologias -->
+  <div id="tab2" class="tab-content">
+    <div class="topo-buttons">
+      <button class="topo-btn active" data-topo="estrela">⭐ Layout em Estrela</button>
+      <button class="topo-btn" data-topo="barramento">〰️ Layout em Barramento</button>
+    </div>
+
+    <div id="topo-info-container" class="topo-info">
+      <!-- conteudo preenchido via js -->
+    </div>
+  </div>
+
+  <div class="footnote">Guia Visual · Automação Industrial · v1.0</div>
+</div>
+
+<script>
+  (function() {
+    // ----- Abas (tab switching) -----
+    const tabs = document.querySelectorAll('.tab-btn');
+    const contents = {
+      tab1: document.getElementById('tab1'),
+      tab2: document.getElementById('tab2')
+    };
+
+    tabs.forEach(btn => {
+      btn.addEventListener('click', function() {
+        // remove active de todos os botões
+        tabs.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+
+        // oculta todos os conteúdos
+        Object.values(contents).forEach(c => c.classList.remove('active'));
+
+        // mostra o conteúdo correspondente
+        const tabId = this.dataset.tab;
+        if (contents[tabId]) contents[tabId].classList.add('active');
+      });
+    });
+
+    // ----- Cards: mostrar detalhe ao clicar -----
+    const cards = document.querySelectorAll('.card');
+    const details = {
+      'detail-par': document.getElementById('detail-par'),
+      'detail-fibra': document.getElementById('detail-fibra'),
+      'detail-wireless': document.getElementById('detail-wireless')
+    };
+
+    // esconde todos os detalhes inicialmente (já estão hidden via CSS, mas garantimos)
+    Object.values(details).forEach(d => d.classList.remove('show'));
+
+    cards.forEach(card => {
+      card.addEventListener('click', function(e) {
+        const detailId = this.dataset.detail;
+        // fecha os outros detalhes
+        Object.keys(details).forEach(key => {
+          if (key === detailId) {
+            details[key].classList.toggle('show');
+          } else {
+            details[key].classList.remove('show');
+          }
+        });
+      });
+    });
+
+    // ----- Topologias: Estrela e Barramento -----
+    const topoInfoContainer = document.getElementById('topo-info-container');
+    const topoBtns = document.querySelectorAll('.topo-btn');
+
+    // dados das topologias
+    const topologias = {
+      estrela: {
+        titulo: '⭐ Layout em Estrela',
+        descricao: 'Todos os dispositivos se conectam a um switch ou hub central. É a topologia mais comum em redes industriais modernas, pois oferece alta confiabilidade e fácil diagnóstico.',
+        vantagens: [
+          'Isolamento de falhas: se um cabo falha, apenas aquele dispositivo é afetado.',
+          'Facilidade de manutenção e expansão (plug-and-play).',
+          'Desempenho previsível, sem colisões (com switch).'
+        ],
+        desvantagens: [
+          'Ponto único de falha: o switch central pode derrubar toda a rede.',
+          'Custo maior com cabos e equipamentos ativos.',
+          'Requer espaço físico para o switch e cabeamento estruturado.'
+        ]
+      },
+      barramento: {
+        titulo: '〰️ Layout em Barramento',
+        descricao: 'Todos os dispositivos compartilham o mesmo cabo (backbone). Comum em redes mais antigas (RS-485, DeviceNet) e em aplicações com poucos nós.',
+        vantagens: [
+          'Menor custo de cabeamento (cabo único percorrendo a planta).',
+          'Simplicidade de instalação em linhas extensas.',
+          'Boa para sistemas com poucos dispositivos e baixa taxa de dados.'
+        ],
+        desvantagens: [
+          'Falha no cabo principal interrompe toda a rede.',
+          'Difícil diagnóstico de falhas (terminadores, reflexões).',
+          'Baixa velocidade e colisões em redes com muitos nós.'
+        ]
+      }
+    };
+
+    function renderTopo(topoKey) {
+      const data = topologias[topoKey];
+      if (!data) return;
+
+      // remove active de todos os botões
+      topoBtns.forEach(btn => btn.classList.remove('active'));
+      // ativa o botão correspondente (pelo dataset)
+      topoBtns.forEach(btn => {
+        if (btn.dataset.topo === topoKey) btn.classList.add('active');
+      });
+
+      // constrói o HTML
+      let html = `<h3>${data.titulo}</h3>`;
+      html += `<div class="desc">${data.descricao}</div>`;
+
+      html += `<div class="vantagens"><h4>✅ Vantagens</h4><ul>`;
+      data.vantagens.forEach(item => html += `<li>${item}</li>`);
+      html += `</ul></div>`;
+
+      html += `<div class="desvantagens"><h4>⚠️ Desvantagens</h4><ul>`;
+      data.desvantagens.forEach(item => html += `<li>${item}</li>`);
+      html += `</ul></div>`;
+
+      topoInfoContainer.innerHTML = html;
+    }
+
+    // evento dos botões de topologia
+    topoBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const topo = this.dataset.topo;
+        renderTopo(topo);
+      });
+    });
+
+    // carrega a topologia padrão (estrela) ao iniciar
+    renderTopo('estrela');
+
+    // (extra) se clicar no botão da aba 2, mantém a topologia ativa.
+    // mas já está ok
+
+  })();
+</script>
+</body>
+</html>
